@@ -1,0 +1,12 @@
+{
+  "source": "ensemble-baseline-revisi",
+  "artifact_model": "/Users/santi/Documents/JOKI/joki-1376/revisi-agropredict-lstm-dashboard/program_colabs/artefak_model/ensemble_model_revisi.pkl",
+  "timestep": 3,
+  "min_positive_observations": 30,
+  "evaluasi_test": {
+    "split": "Test",
+    "MAPE(%)": 39.23382838696763,
+    "RMSE(kg)": 43537.52933855285,
+    "R2": 0.6428264762473905
+  }
+}

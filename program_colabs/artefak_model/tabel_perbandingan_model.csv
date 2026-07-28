@@ -1,0 +1,4 @@
+Model,Test_MedianMAPE_mean,Test_MedianMAPE_std,Test_R2_mean,Test_RMSE_mean,Test_MAPE_diagnostik_mean,Test_MAPE_diagnostik_std,Waktu_mean,Parameter
+LSTM,28.847,6.907,0.72,47773.251,84.039,10.175,7.933,38049
+SimpleRNN,30.956,3.911,0.836,36684.484,124.772,46.54,4.4,9537
+GRU,33.364,5.703,0.763,43914.46,88.622,4.685,8.4,28833

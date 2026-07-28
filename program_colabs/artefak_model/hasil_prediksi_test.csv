@@ -1,0 +1,325 @@
+Nama,Periode,split,aktual,prediksi,metode
+Bawang Daun,2023-04-01,train,36000.0,54000.0,lag1
+Bawang Daun,2023-05-01,train,18000.0,36000.0,lag1
+Bawang Daun,2023-06-01,train,8000.0,18000.0,lag1
+Bawang Daun,2023-07-01,train,12000.0,8000.0,lag1
+Bawang Daun,2023-08-01,train,14000.0,12000.0,lag1
+Bawang Daun,2023-09-01,train,16000.0,14000.0,lag1
+Bawang Daun,2023-10-01,train,14500.0,16000.0,lag1
+Bawang Daun,2023-11-01,train,37500.0,14500.0,lag1
+Bawang Daun,2023-12-01,train,24000.0,37500.0,lag1
+Bawang Daun,2024-01-01,train,60000.0,24000.0,lag1
+Bawang Daun,2024-02-01,train,60000.0,60000.0,lag1
+Bawang Daun,2024-03-01,train,60000.0,60000.0,lag1
+Bawang Daun,2024-04-01,train,136400.0,60000.0,lag1
+Bawang Daun,2024-05-01,train,130500.0,136400.0,lag1
+Bawang Daun,2024-06-01,train,235400.0,130500.0,lag1
+Bawang Daun,2024-07-01,train,97200.0,235400.0,lag1
+Bawang Daun,2024-08-01,train,0.0,97200.0,lag1
+Bawang Daun,2024-09-01,train,95900.0,0.0,lag1
+Bawang Daun,2024-10-01,train,183600.0,95900.0,lag1
+Bawang Daun,2024-11-01,train,90200.0,183600.0,lag1
+Bawang Daun,2024-12-01,train,167200.0,90200.0,lag1
+Bawang Daun,2025-01-01,train,18000.0,167200.0,lag1
+Bawang Daun,2025-02-01,train,36000.0,18000.0,lag1
+Bawang Daun,2025-03-01,train,54000.0,36000.0,lag1
+Bawang Daun,2025-04-01,train,36000.0,54000.0,lag1
+Bawang Daun,2025-05-01,val,18000.0,36000.0,lag1
+Bawang Daun,2025-06-01,val,8000.0,18000.0,lag1
+Bawang Daun,2025-07-01,val,12000.0,8000.0,lag1
+Bawang Daun,2025-08-01,val,14000.0,12000.0,lag1
+Bawang Daun,2025-09-01,val,16000.0,14000.0,lag1
+Bawang Daun,2025-10-01,test,14500.0,16000.0,lag1
+Bawang Daun,2025-11-01,test,37500.0,14500.0,lag1
+Bawang Daun,2025-12-01,test,24000.0,37500.0,lag1
+Bawang Daun,2026-01-01,test,60000.0,24000.0,lag1
+Bawang Daun,2026-02-01,test,60000.0,60000.0,lag1
+Bawang Daun,2026-03-01,test,60000.0,60000.0,lag1
+Buncis,2023-04-01,train,80000.0,0.0,zero
+Buncis,2023-05-01,train,80000.0,0.0,zero
+Buncis,2023-06-01,train,50000.0,0.0,zero
+Buncis,2023-07-01,train,12000.0,0.0,zero
+Buncis,2023-08-01,train,7500.0,0.0,zero
+Buncis,2023-09-01,train,28000.0,0.0,zero
+Buncis,2023-10-01,train,21000.0,0.0,zero
+Buncis,2023-11-01,train,75000.0,0.0,zero
+Buncis,2023-12-01,train,0.0,0.0,zero
+Buncis,2024-01-01,train,46000.0,0.0,zero
+Buncis,2024-02-01,train,40000.0,0.0,zero
+Buncis,2024-03-01,train,140000.0,0.0,zero
+Buncis,2024-04-01,train,189500.0,0.0,zero
+Buncis,2024-05-01,train,137500.0,0.0,zero
+Buncis,2024-06-01,train,28500.0,0.0,zero
+Buncis,2024-07-01,train,0.0,0.0,zero
+Buncis,2024-08-01,train,123800.0,0.0,zero
+Buncis,2024-09-01,train,145100.0,0.0,zero
+Buncis,2024-10-01,train,67500.0,0.0,zero
+Buncis,2024-11-01,train,64500.0,0.0,zero
+Buncis,2024-12-01,train,59100.0,0.0,zero
+Buncis,2025-01-01,train,72000.0,0.0,zero
+Buncis,2025-02-01,train,88000.0,0.0,zero
+Buncis,2025-03-01,train,96000.0,0.0,zero
+Buncis,2025-04-01,train,80000.0,0.0,zero
+Buncis,2025-05-01,val,80000.0,0.0,zero
+Buncis,2025-06-01,val,50000.0,0.0,zero
+Buncis,2025-07-01,val,12000.0,0.0,zero
+Buncis,2025-08-01,val,7500.0,0.0,zero
+Buncis,2025-09-01,val,28000.0,0.0,zero
+Buncis,2025-10-01,test,21000.0,0.0,zero
+Buncis,2025-11-01,test,75000.0,0.0,zero
+Buncis,2025-12-01,test,0.0,0.0,zero
+Buncis,2026-01-01,test,46000.0,0.0,zero
+Buncis,2026-02-01,test,40000.0,0.0,zero
+Buncis,2026-03-01,test,140000.0,0.0,zero
+Cabai Besar,2023-04-01,train,123500.0,123500.0,seasonal_pos_median
+Cabai Besar,2023-05-01,train,123500.0,123500.0,seasonal_pos_median
+Cabai Besar,2023-06-01,train,118000.0,118000.0,seasonal_pos_median
+Cabai Besar,2023-07-01,train,18000.0,18000.0,seasonal_pos_median
+Cabai Besar,2023-08-01,train,18000.0,18000.0,seasonal_pos_median
+Cabai Besar,2023-09-01,train,36000.0,36000.0,seasonal_pos_median
+Cabai Besar,2023-10-01,train,18000.0,18000.0,seasonal_pos_median
+Cabai Besar,2023-11-01,train,114000.0,114000.0,seasonal_pos_median
+Cabai Besar,2023-12-01,train,47500.0,47500.0,seasonal_pos_median
+Cabai Besar,2024-01-01,train,120000.0,102750.0,seasonal_pos_median
+Cabai Besar,2024-02-01,train,30000.0,62500.0,seasonal_pos_median
+Cabai Besar,2024-03-01,train,90000.0,111500.0,seasonal_pos_median
+Cabai Besar,2024-04-01,train,0.0,123500.0,seasonal_pos_median
+Cabai Besar,2024-05-01,train,0.0,123500.0,seasonal_pos_median
+Cabai Besar,2024-06-01,train,0.0,118000.0,seasonal_pos_median
+Cabai Besar,2024-07-01,train,0.0,18000.0,seasonal_pos_median
+Cabai Besar,2024-08-01,train,0.0,18000.0,seasonal_pos_median
+Cabai Besar,2024-09-01,train,0.0,36000.0,seasonal_pos_median
+Cabai Besar,2024-10-01,train,0.0,18000.0,seasonal_pos_median
+Cabai Besar,2024-11-01,train,0.0,114000.0,seasonal_pos_median
+Cabai Besar,2024-12-01,train,0.0,47500.0,seasonal_pos_median
+Cabai Besar,2025-01-01,train,85500.0,102750.0,seasonal_pos_median
+Cabai Besar,2025-02-01,train,95000.0,62500.0,seasonal_pos_median
+Cabai Besar,2025-03-01,train,133000.0,111500.0,seasonal_pos_median
+Cabai Besar,2025-04-01,train,123500.0,123500.0,seasonal_pos_median
+Cabai Besar,2025-05-01,val,123500.0,123500.0,seasonal_pos_median
+Cabai Besar,2025-06-01,val,118000.0,118000.0,seasonal_pos_median
+Cabai Besar,2025-07-01,val,18000.0,18000.0,seasonal_pos_median
+Cabai Besar,2025-08-01,val,18000.0,18000.0,seasonal_pos_median
+Cabai Besar,2025-09-01,val,36000.0,36000.0,seasonal_pos_median
+Cabai Besar,2025-10-01,test,18000.0,18000.0,seasonal_pos_median
+Cabai Besar,2025-11-01,test,114000.0,114000.0,seasonal_pos_median
+Cabai Besar,2025-12-01,test,47500.0,47500.0,seasonal_pos_median
+Cabai Besar,2026-01-01,test,120000.0,102750.0,seasonal_pos_median
+Cabai Besar,2026-02-01,test,30000.0,62500.0,seasonal_pos_median
+Cabai Besar,2026-03-01,test,90000.0,111500.0,seasonal_pos_median
+Cabai Keriting,2023-04-01,train,104500.0,104500.0,seasonal_pos_median
+Cabai Keriting,2023-05-01,train,104500.0,104500.0,seasonal_pos_median
+Cabai Keriting,2023-06-01,train,104500.0,104500.0,seasonal_pos_median
+Cabai Keriting,2023-07-01,train,18000.0,18000.0,seasonal_pos_median
+Cabai Keriting,2023-08-01,train,9000.0,9000.0,seasonal_pos_median
+Cabai Keriting,2023-09-01,train,45000.0,45000.0,seasonal_pos_median
+Cabai Keriting,2023-10-01,train,18000.0,18000.0,seasonal_pos_median
+Cabai Keriting,2023-11-01,train,114000.0,114000.0,seasonal_pos_median
+Cabai Keriting,2023-12-01,train,47500.0,47500.0,seasonal_pos_median
+Cabai Keriting,2024-01-01,train,120000.0,93250.0,seasonal_pos_median
+Cabai Keriting,2024-02-01,train,30000.0,57750.0,seasonal_pos_median
+Cabai Keriting,2024-03-01,train,110000.0,107250.0,seasonal_pos_median
+Cabai Keriting,2024-04-01,train,0.0,104500.0,seasonal_pos_median
+Cabai Keriting,2024-05-01,train,0.0,104500.0,seasonal_pos_median
+Cabai Keriting,2024-06-01,train,0.0,104500.0,seasonal_pos_median
+Cabai Keriting,2024-07-01,train,0.0,18000.0,seasonal_pos_median
+Cabai Keriting,2024-08-01,train,0.0,9000.0,seasonal_pos_median
+Cabai Keriting,2024-09-01,train,0.0,45000.0,seasonal_pos_median
+Cabai Keriting,2024-10-01,train,0.0,18000.0,seasonal_pos_median
+Cabai Keriting,2024-11-01,train,0.0,114000.0,seasonal_pos_median
+Cabai Keriting,2024-12-01,train,0.0,47500.0,seasonal_pos_median
+Cabai Keriting,2025-01-01,train,66500.0,93250.0,seasonal_pos_median
+Cabai Keriting,2025-02-01,train,85500.0,57750.0,seasonal_pos_median
+Cabai Keriting,2025-03-01,train,104500.0,107250.0,seasonal_pos_median
+Cabai Keriting,2025-04-01,train,104500.0,104500.0,seasonal_pos_median
+Cabai Keriting,2025-05-01,val,104500.0,104500.0,seasonal_pos_median
+Cabai Keriting,2025-06-01,val,104500.0,104500.0,seasonal_pos_median
+Cabai Keriting,2025-07-01,val,18000.0,18000.0,seasonal_pos_median
+Cabai Keriting,2025-08-01,val,9000.0,9000.0,seasonal_pos_median
+Cabai Keriting,2025-09-01,val,45000.0,45000.0,seasonal_pos_median
+Cabai Keriting,2025-10-01,test,18000.0,18000.0,seasonal_pos_median
+Cabai Keriting,2025-11-01,test,114000.0,114000.0,seasonal_pos_median
+Cabai Keriting,2025-12-01,test,47500.0,47500.0,seasonal_pos_median
+Cabai Keriting,2026-01-01,test,120000.0,93250.0,seasonal_pos_median
+Cabai Keriting,2026-02-01,test,30000.0,57750.0,seasonal_pos_median
+Cabai Keriting,2026-03-01,test,110000.0,107250.0,seasonal_pos_median
+Cabai Rawit,2023-04-01,train,142500.0,142500.0,seasonal_pos_median
+Cabai Rawit,2023-05-01,train,142500.0,142500.0,seasonal_pos_median
+Cabai Rawit,2023-06-01,train,135500.0,135500.0,seasonal_pos_median
+Cabai Rawit,2023-07-01,train,18000.0,18000.0,seasonal_pos_median
+Cabai Rawit,2023-08-01,train,18000.0,18000.0,seasonal_pos_median
+Cabai Rawit,2023-09-01,train,36000.0,36000.0,seasonal_pos_median
+Cabai Rawit,2023-10-01,train,18000.0,18000.0,seasonal_pos_median
+Cabai Rawit,2023-11-01,train,114000.0,114000.0,seasonal_pos_median
+Cabai Rawit,2023-12-01,train,19000.0,19000.0,seasonal_pos_median
+Cabai Rawit,2024-01-01,train,150000.0,94000.0,seasonal_pos_median
+Cabai Rawit,2024-02-01,train,40000.0,67500.0,seasonal_pos_median
+Cabai Rawit,2024-03-01,train,140000.0,136500.0,seasonal_pos_median
+Cabai Rawit,2024-04-01,train,0.0,142500.0,seasonal_pos_median
+Cabai Rawit,2024-05-01,train,0.0,142500.0,seasonal_pos_median
+Cabai Rawit,2024-06-01,train,0.0,135500.0,seasonal_pos_median
+Cabai Rawit,2024-07-01,train,0.0,18000.0,seasonal_pos_median
+Cabai Rawit,2024-08-01,train,0.0,18000.0,seasonal_pos_median
+Cabai Rawit,2024-09-01,train,0.0,36000.0,seasonal_pos_median
+Cabai Rawit,2024-10-01,train,0.0,18000.0,seasonal_pos_median
+Cabai Rawit,2024-11-01,train,0.0,114000.0,seasonal_pos_median
+Cabai Rawit,2024-12-01,train,0.0,19000.0,seasonal_pos_median
+Cabai Rawit,2025-01-01,train,38000.0,94000.0,seasonal_pos_median
+Cabai Rawit,2025-02-01,train,95000.0,67500.0,seasonal_pos_median
+Cabai Rawit,2025-03-01,train,133000.0,136500.0,seasonal_pos_median
+Cabai Rawit,2025-04-01,train,142500.0,142500.0,seasonal_pos_median
+Cabai Rawit,2025-05-01,val,142500.0,142500.0,seasonal_pos_median
+Cabai Rawit,2025-06-01,val,135500.0,135500.0,seasonal_pos_median
+Cabai Rawit,2025-07-01,val,18000.0,18000.0,seasonal_pos_median
+Cabai Rawit,2025-08-01,val,18000.0,18000.0,seasonal_pos_median
+Cabai Rawit,2025-09-01,val,36000.0,36000.0,seasonal_pos_median
+Cabai Rawit,2025-10-01,test,18000.0,18000.0,seasonal_pos_median
+Cabai Rawit,2025-11-01,test,114000.0,114000.0,seasonal_pos_median
+Cabai Rawit,2025-12-01,test,19000.0,19000.0,seasonal_pos_median
+Cabai Rawit,2026-01-01,test,150000.0,94000.0,seasonal_pos_median
+Cabai Rawit,2026-02-01,test,40000.0,67500.0,seasonal_pos_median
+Cabai Rawit,2026-03-01,test,140000.0,136500.0,seasonal_pos_median
+Kembang Kol,2023-04-01,train,72000.0,0.0,zero
+Kembang Kol,2023-05-01,train,36000.0,0.0,zero
+Kembang Kol,2023-06-01,train,8000.0,0.0,zero
+Kembang Kol,2023-07-01,train,12000.0,0.0,zero
+Kembang Kol,2023-08-01,train,15000.0,0.0,zero
+Kembang Kol,2023-09-01,train,21000.0,0.0,zero
+Kembang Kol,2023-10-01,train,14000.0,0.0,zero
+Kembang Kol,2023-11-01,train,30000.0,0.0,zero
+Kembang Kol,2023-12-01,train,16000.0,0.0,zero
+Kembang Kol,2024-01-01,train,80000.0,0.0,zero
+Kembang Kol,2024-02-01,train,80000.0,0.0,zero
+Kembang Kol,2024-03-01,train,160000.0,0.0,zero
+Kembang Kol,2024-04-01,train,152900.0,0.0,zero
+Kembang Kol,2024-05-01,train,233000.0,0.0,zero
+Kembang Kol,2024-06-01,train,89200.0,0.0,zero
+Kembang Kol,2024-07-01,train,110100.0,0.0,zero
+Kembang Kol,2024-08-01,train,238900.0,0.0,zero
+Kembang Kol,2024-09-01,train,0.0,0.0,zero
+Kembang Kol,2024-10-01,train,110200.0,0.0,zero
+Kembang Kol,2024-11-01,train,230600.0,0.0,zero
+Kembang Kol,2024-12-01,train,146100.0,0.0,zero
+Kembang Kol,2025-01-01,train,108000.0,0.0,zero
+Kembang Kol,2025-02-01,train,90000.0,0.0,zero
+Kembang Kol,2025-03-01,train,72000.0,0.0,zero
+Kembang Kol,2025-04-01,train,72000.0,0.0,zero
+Kembang Kol,2025-05-01,val,36000.0,0.0,zero
+Kembang Kol,2025-06-01,val,8000.0,0.0,zero
+Kembang Kol,2025-07-01,val,12000.0,0.0,zero
+Kembang Kol,2025-08-01,val,15000.0,0.0,zero
+Kembang Kol,2025-09-01,val,21000.0,0.0,zero
+Kembang Kol,2025-10-01,test,14000.0,0.0,zero
+Kembang Kol,2025-11-01,test,30000.0,0.0,zero
+Kembang Kol,2025-12-01,test,16000.0,0.0,zero
+Kembang Kol,2026-01-01,test,80000.0,0.0,zero
+Kembang Kol,2026-02-01,test,80000.0,0.0,zero
+Kembang Kol,2026-03-01,test,160000.0,0.0,zero
+Kubis,2023-04-01,train,0.0,13333.333333333334,blend_lag_roll
+Kubis,2023-05-01,train,0.0,4000.0,blend_lag_roll
+Kubis,2023-06-01,train,0.0,0.0,blend_lag_roll
+Kubis,2023-07-01,train,13000.0,0.0,blend_lag_roll
+Kubis,2023-08-01,train,8000.0,8666.666666666666,blend_lag_roll
+Kubis,2023-09-01,train,14000.0,7500.0,blend_lag_roll
+Kubis,2023-10-01,train,7000.0,12833.333333333332,blend_lag_roll
+Kubis,2023-11-01,train,15000.0,8333.333333333332,blend_lag_roll
+Kubis,2023-12-01,train,16000.0,13500.0,blend_lag_roll
+Kubis,2024-01-01,train,60000.0,14333.333333333332,blend_lag_roll
+Kubis,2024-02-01,train,60000.0,45166.666666666664,blend_lag_roll
+Kubis,2024-03-01,train,100000.0,52666.66666666667,blend_lag_roll
+Kubis,2024-04-01,train,178100.0,86666.66666666666,blend_lag_roll
+Kubis,2024-05-01,train,194800.0,145400.0,blend_lag_roll
+Kubis,2024-06-01,train,191900.0,176216.6666666667,blend_lag_roll
+Kubis,2024-07-01,train,176900.0,190083.3333333333,blend_lag_roll
+Kubis,2024-08-01,train,238500.0,182383.3333333333,blend_lag_roll
+Kubis,2024-09-01,train,136900.0,220466.6666666667,blend_lag_roll
+Kubis,2024-10-01,train,18900.0,160500.0,blend_lag_roll
+Kubis,2024-11-01,train,196900.0,75166.66666666667,blend_lag_roll
+Kubis,2024-12-01,train,170800.0,157233.33333333334,blend_lag_roll
+Kubis,2025-01-01,train,56000.0,149833.33333333334,blend_lag_roll
+Kubis,2025-02-01,train,24000.0,98616.66666666669,blend_lag_roll
+Kubis,2025-03-01,train,0.0,53800.0,blend_lag_roll
+Kubis,2025-04-01,train,0.0,13333.333333333334,blend_lag_roll
+Kubis,2025-05-01,val,0.0,4000.0,blend_lag_roll
+Kubis,2025-06-01,val,0.0,0.0,blend_lag_roll
+Kubis,2025-07-01,val,13000.0,0.0,blend_lag_roll
+Kubis,2025-08-01,val,8000.0,8666.666666666666,blend_lag_roll
+Kubis,2025-09-01,val,14000.0,7500.0,blend_lag_roll
+Kubis,2025-10-01,test,7000.0,12833.333333333332,blend_lag_roll
+Kubis,2025-11-01,test,15000.0,8333.333333333332,blend_lag_roll
+Kubis,2025-12-01,test,16000.0,13500.0,blend_lag_roll
+Kubis,2026-01-01,test,60000.0,14333.333333333332,blend_lag_roll
+Kubis,2026-02-01,test,60000.0,45166.666666666664,blend_lag_roll
+Kubis,2026-03-01,test,100000.0,52666.66666666667,blend_lag_roll
+Labu Siam,2023-04-01,train,240000.0,240000.0,seasonal_pos_median
+Labu Siam,2023-05-01,train,240000.0,240000.0,seasonal_pos_median
+Labu Siam,2023-06-01,train,129000.0,129000.0,seasonal_pos_median
+Labu Siam,2023-07-01,train,12000.0,12000.0,seasonal_pos_median
+Labu Siam,2023-08-01,train,15000.0,15000.0,seasonal_pos_median
+Labu Siam,2023-09-01,train,21000.0,21000.0,seasonal_pos_median
+Labu Siam,2023-10-01,train,21000.0,21000.0,seasonal_pos_median
+Labu Siam,2023-11-01,train,112500.0,112500.0,seasonal_pos_median
+Labu Siam,2023-12-01,train,8000.0,8000.0,seasonal_pos_median
+Labu Siam,2024-01-01,train,300000.0,225000.0,seasonal_pos_median
+Labu Siam,2024-02-01,train,100000.0,118000.0,seasonal_pos_median
+Labu Siam,2024-03-01,train,320000.0,256000.0,seasonal_pos_median
+Labu Siam,2024-04-01,train,0.0,240000.0,seasonal_pos_median
+Labu Siam,2024-05-01,train,0.0,240000.0,seasonal_pos_median
+Labu Siam,2024-06-01,train,0.0,129000.0,seasonal_pos_median
+Labu Siam,2024-07-01,train,0.0,12000.0,seasonal_pos_median
+Labu Siam,2024-08-01,train,0.0,15000.0,seasonal_pos_median
+Labu Siam,2024-09-01,train,0.0,21000.0,seasonal_pos_median
+Labu Siam,2024-10-01,train,0.0,21000.0,seasonal_pos_median
+Labu Siam,2024-11-01,train,0.0,112500.0,seasonal_pos_median
+Labu Siam,2024-12-01,train,0.0,8000.0,seasonal_pos_median
+Labu Siam,2025-01-01,train,150000.0,225000.0,seasonal_pos_median
+Labu Siam,2025-02-01,train,136000.0,118000.0,seasonal_pos_median
+Labu Siam,2025-03-01,train,192000.0,256000.0,seasonal_pos_median
+Labu Siam,2025-04-01,train,240000.0,240000.0,seasonal_pos_median
+Labu Siam,2025-05-01,val,240000.0,240000.0,seasonal_pos_median
+Labu Siam,2025-06-01,val,129000.0,129000.0,seasonal_pos_median
+Labu Siam,2025-07-01,val,12000.0,12000.0,seasonal_pos_median
+Labu Siam,2025-08-01,val,15000.0,15000.0,seasonal_pos_median
+Labu Siam,2025-09-01,val,21000.0,21000.0,seasonal_pos_median
+Labu Siam,2025-10-01,test,21000.0,21000.0,seasonal_pos_median
+Labu Siam,2025-11-01,test,112500.0,112500.0,seasonal_pos_median
+Labu Siam,2025-12-01,test,8000.0,8000.0,seasonal_pos_median
+Labu Siam,2026-01-01,test,300000.0,225000.0,seasonal_pos_median
+Labu Siam,2026-02-01,test,100000.0,118000.0,seasonal_pos_median
+Labu Siam,2026-03-01,test,320000.0,256000.0,seasonal_pos_median
+Tomat,2023-04-01,train,130000.0,130000.0,seasonal_pos_median
+Tomat,2023-05-01,train,130000.0,130000.0,seasonal_pos_median
+Tomat,2023-06-01,train,117000.0,117000.0,seasonal_pos_median
+Tomat,2023-07-01,train,12000.0,12000.0,seasonal_pos_median
+Tomat,2023-08-01,train,8000.0,8000.0,seasonal_pos_median
+Tomat,2023-09-01,train,28000.0,28000.0,seasonal_pos_median
+Tomat,2023-10-01,train,28000.0,28000.0,seasonal_pos_median
+Tomat,2023-11-01,train,97500.0,97500.0,seasonal_pos_median
+Tomat,2023-12-01,train,16000.0,16000.0,seasonal_pos_median
+Tomat,2024-01-01,train,260000.0,185000.0,seasonal_pos_median
+Tomat,2024-02-01,train,80000.0,90000.0,seasonal_pos_median
+Tomat,2024-03-01,train,260000.0,200000.0,seasonal_pos_median
+Tomat,2024-04-01,train,0.0,130000.0,seasonal_pos_median
+Tomat,2024-05-01,train,0.0,130000.0,seasonal_pos_median
+Tomat,2024-06-01,train,0.0,117000.0,seasonal_pos_median
+Tomat,2024-07-01,train,0.0,12000.0,seasonal_pos_median
+Tomat,2024-08-01,train,0.0,8000.0,seasonal_pos_median
+Tomat,2024-09-01,train,0.0,28000.0,seasonal_pos_median
+Tomat,2024-10-01,train,0.0,28000.0,seasonal_pos_median
+Tomat,2024-11-01,train,0.0,97500.0,seasonal_pos_median
+Tomat,2024-12-01,train,0.0,16000.0,seasonal_pos_median
+Tomat,2025-01-01,train,110000.0,185000.0,seasonal_pos_median
+Tomat,2025-02-01,train,100000.0,90000.0,seasonal_pos_median
+Tomat,2025-03-01,train,140000.0,200000.0,seasonal_pos_median
+Tomat,2025-04-01,train,130000.0,130000.0,seasonal_pos_median
+Tomat,2025-05-01,val,130000.0,130000.0,seasonal_pos_median
+Tomat,2025-06-01,val,117000.0,117000.0,seasonal_pos_median
+Tomat,2025-07-01,val,12000.0,12000.0,seasonal_pos_median
+Tomat,2025-08-01,val,8000.0,8000.0,seasonal_pos_median
+Tomat,2025-09-01,val,28000.0,28000.0,seasonal_pos_median
+Tomat,2025-10-01,test,28000.0,28000.0,seasonal_pos_median
+Tomat,2025-11-01,test,97500.0,97500.0,seasonal_pos_median
+Tomat,2025-12-01,test,16000.0,16000.0,seasonal_pos_median
+Tomat,2026-01-01,test,260000.0,185000.0,seasonal_pos_median
+Tomat,2026-02-01,test,80000.0,90000.0,seasonal_pos_median
+Tomat,2026-03-01,test,260000.0,200000.0,seasonal_pos_median

@@ -1,0 +1,12 @@
+# Simpan file ini sebagai .streamlit/config.toml di folder proyek.
+# Tanpa ini, pengguna yang memakai tema gelap akan melihat teks gelap di atas kartu putih.
+
+[theme]
+base = "light"
+primaryColor = "#2E6F4E"
+backgroundColor = "#F4F6F1"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#16261D"
+
+[client]
+toolbarMode = "minimal"

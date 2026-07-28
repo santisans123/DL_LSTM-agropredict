@@ -1,0 +1,14 @@
+{
+  "timestep": 3,
+  "features": [
+    "Produksi_kg",
+    "lag1_produksi",
+    "rolling3_produksi",
+    "bulan_sin",
+    "bulan_cos"
+  ],
+  "target": "Produksi_kg",
+  "n_komoditas": 21,
+  "selection_metric": "validation MAPE on positive actuals",
+  "source_csv": "data_produksi_gabungan_clean.csv"
+}

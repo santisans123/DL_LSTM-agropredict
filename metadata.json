@@ -1,0 +1,8 @@
+{
+  "name": "Remix: AgroPredict LSTM Dashboard",
+  "description": "Dashboard modern berbasis AI untuk prediksi hasil produksi tanaman sayuran dan buah-buahan menggunakan algoritma LSTM di Kecamatan Cisarua.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
