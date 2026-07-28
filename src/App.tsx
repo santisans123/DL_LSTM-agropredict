@@ -518,7 +518,7 @@ export default function App() {
                   Agro-LSTM Predictor
                 </h1>
                 <p className="text-slate-300 text-sm md:text-base font-medium leading-7 max-w-3xl">
-                  Sistem analitik untuk memprediksi hasil produksi tanaman sayuran dan buah-buahan di Kecamatan Cisarua, Kabupaten Bandung Barat menggunakan model LSTM.
+                  Sistem analitik untuk memprediksi hasil produksi Hortikultura BPP (Badan Penyuluh Pertanian). Tanaman terdiri dari sayuran dan buah-buahan di Kecamatan Cisarua, Kabupaten Bandung Barat menggunakan model LSTM.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-3">
