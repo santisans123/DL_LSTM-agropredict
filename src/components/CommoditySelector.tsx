@@ -1,17 +1,18 @@
 import React from 'react';
 import { Commodity } from '../constants';
-import { Leaf, Sparkles } from 'lucide-react';
+import { Leaf, Sparkles, UploadCloud } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface Props {
   commodities: Commodity[];
   selectedId: string;
   onSelect: (commodity: Commodity) => void;
+  hasData: boolean;
 }
 
 const formatMape = (value: number) => (Number.isFinite(value) ? `${value}%` : '-');
 
-export function CommoditySelector({ commodities, selectedId, onSelect }: Props) {
+export function CommoditySelector({ commodities, selectedId, onSelect, hasData }: Props) {
   return (
     <div className="space-y-5">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
@@ -22,12 +23,26 @@ export function CommoditySelector({ commodities, selectedId, onSelect }: Props) 
           </h2>
           <p className="text-sm text-slate-500 font-medium">Pilih salah satu komoditas untuk memuat konfigurasi model LSTM terlatih</p>
         </div>
-        <div className="flex w-fit items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full text-xs font-black">
-          <Sparkles size={14} />
-          <span>{commodities.length} Komoditas Aktif</span>
-        </div>
+        {hasData ? (
+          <div className="flex w-fit items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full text-xs font-black">
+            <Sparkles size={14} />
+            <span>{commodities.length} Komoditas Aktif</span>
+          </div>
+        ) : (
+          <div className="flex w-fit items-center gap-2 bg-amber-50 text-amber-700 px-4 py-2 rounded-full text-xs font-black">
+            <Sparkles size={14} />
+            <span>Belum ada data diunggah</span>
+          </div>
+        )}
       </div>
 
+      {!hasData ? (
+        <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-200 bg-white/60 py-12 text-center">
+          <UploadCloud className="w-8 h-8 text-slate-300" />
+          <p className="text-sm font-bold text-slate-600">Belum ada komoditas untuk ditampilkan</p>
+          <p className="text-xs text-slate-400 font-medium max-w-sm">Unggah dataset produksi terlebih dahulu untuk memuat daftar komoditas beserta konfigurasi model LSTM-nya</p>
+        </div>
+      ) : (
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-5 xl:gap-6">
         {commodities.map((crop) => {
           const isSelected = crop.id === selectedId;
@@ -58,7 +73,11 @@ export function CommoditySelector({ commodities, selectedId, onSelect }: Props) 
 
               <div className="mt-3 text-left">
                 <h3 className="font-black text-slate-800 text-base truncate">{crop.name}</h3>
-                <p className="text-[10px] text-slate-400 font-bold font-mono uppercase mt-1 truncate">{crop.pricePerKgRange}</p>
+                {crop.pricePerKgRange ? (
+                  <p className="text-[10px] text-slate-400 font-bold font-mono uppercase mt-1 truncate">{crop.pricePerKgRange}</p>
+                ) : (
+                  <p className="text-[10px] text-amber-600 font-bold italic mt-1 truncate">Upload data harga dahulu</p>
+                )}
               </div>
 
               <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between w-full">
@@ -83,6 +102,7 @@ export function CommoditySelector({ commodities, selectedId, onSelect }: Props) 
           );
         })}
       </div>
+      )}
     </div>
   );
 }

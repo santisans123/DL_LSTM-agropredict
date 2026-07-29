@@ -126,6 +126,7 @@ function combinedDatasetPatch(datasets: Partial<Record<DatasetType, DatasetUploa
 const EMPTY_METRIC_COMMODITIES: Commodity[] = COMMODITIES.map((commodity) => ({
   ...commodity,
   metrics: { ...commodity.metrics, mape: Number.NaN },
+  pricePerKgRange: '',
 }));
 
 /**
@@ -586,10 +587,11 @@ export default function App() {
         />
 
         <section ref={commoditySectionRef}>
-          <CommoditySelector 
+          <CommoditySelector
             commodities={dashboardCommodities}
-            selectedId={selectedCommodity.id} 
-            onSelect={handleSelectCommodity} 
+            selectedId={selectedCommodity.id}
+            onSelect={handleSelectCommodity}
+            hasData={Boolean(appliedDataset)}
           />
         </section>
 

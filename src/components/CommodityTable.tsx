@@ -83,7 +83,9 @@ export function CommodityTable({ commodities, selectedCommodity, showAll, onShow
                   <td className="px-6 py-4 text-right font-bold text-slate-700">{lastHistory.actual.toLocaleString('id-ID')} kg</td>
                   <td className="px-6 py-4 text-right font-black text-emerald-700">{lastHistory.predicted.toLocaleString('id-ID')} kg</td>
                   <td className="px-6 py-4 text-right font-bold text-slate-700">{formatMape(commodity.metrics.mape)}</td>
-                  <td className="px-6 py-4 font-semibold text-slate-600">{commodity.pricePerKgRange}</td>
+                  <td className="px-6 py-4 font-semibold text-slate-600">
+                    {commodity.pricePerKgRange || <span className="text-amber-600 italic">Upload data harga dahulu</span>}
+                  </td>
                 </tr>
               );
             })}
