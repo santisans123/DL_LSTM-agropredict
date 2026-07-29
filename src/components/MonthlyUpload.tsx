@@ -55,7 +55,8 @@ export function MonthlyUpload({
   onPreviewLoaded,
   onApplyDataset,
 }: Props) {
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const excelInputRef = useRef<HTMLInputElement | null>(null);
+  const csvInputRef = useRef<HTMLInputElement | null>(null);
   const [datasetType, setDatasetType] = useState<DatasetType>('production');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -184,9 +185,20 @@ export function MonthlyUpload({
             </a>
 
             <input
-              ref={inputRef}
+              ref={excelInputRef}
               type="file"
-              accept=".csv,.xlsx,.xls"
+              accept=".xlsx,.xls"
+              className="hidden"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (file) void handleFile(file);
+                event.target.value = '';
+              }}
+            />
+            <input
+              ref={csvInputRef}
+              type="file"
+              accept=".csv"
               className="hidden"
               onChange={(event) => {
                 const file = event.target.files?.[0];
@@ -196,19 +208,33 @@ export function MonthlyUpload({
             />
             <button
               type="button"
-              onClick={() => inputRef.current?.click()}
+              onClick={() => excelInputRef.current?.click()}
               disabled={loading}
-              className="inline-flex h-12 min-w-[190px] items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 text-sm font-black text-white shadow-sm hover:bg-slate-800 disabled:cursor-wait disabled:opacity-70 transition-colors"
+              className="inline-flex h-12 min-w-[170px] items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 text-sm font-black text-white shadow-sm hover:bg-slate-800 disabled:cursor-wait disabled:opacity-70 transition-colors"
             >
               <CalendarClock size={17} />
-              {loading ? 'Membaca File...' : 'Import Dataset'}
+              {loading ? 'Membaca File...' : 'Upload Excel'}
+            </button>
+            <button
+              type="button"
+              onClick={() => csvInputRef.current?.click()}
+              disabled={loading}
+              className="inline-flex h-12 min-w-[170px] items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-sm font-black text-slate-800 shadow-sm hover:bg-slate-100 disabled:cursor-wait disabled:opacity-70 transition-colors"
+            >
+              <FileSpreadsheet size={17} />
+              {loading ? 'Membaca File...' : 'Upload CSV'}
             </button>
           </div>
         </div>
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Format Kolom Wajib</p>
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Format Kolom Wajib</p>
+          <p className="text-[11px] font-semibold text-slate-500">
+            Berlaku sama untuk file Excel (.xlsx) maupun CSV (.csv)
+          </p>
+        </div>
         <div className="mt-3 flex flex-wrap gap-2">
           {FORMAT_GUIDE[datasetType].map((column) => (
             <span key={column} className="rounded-lg bg-white border border-slate-200 px-2.5 py-1.5 text-[11px] font-bold text-slate-700">
