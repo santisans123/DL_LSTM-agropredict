@@ -119,15 +119,15 @@ export function StatCards({
             <div className={`p-2.5 rounded-xl bg-${stat.color}-500/10 text-${stat.color}-600`}>
               <stat.icon size={20} />
             </div>
-            <div className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
-              stat.trend === 'up' 
-                ? 'text-emerald-600 bg-emerald-50' 
-                : stat.trend === 'down' 
-                ? 'text-rose-600 bg-rose-50' 
-                : 'text-slate-600 bg-slate-100'
-            }`}>
-              {stat.change}
-            </div>
+            {stat.trend !== 'none' && (
+              <div className={`p-1.5 rounded-full ${
+                stat.trend === 'up'
+                  ? 'text-emerald-600 bg-emerald-50'
+                  : 'text-rose-600 bg-rose-50'
+              }`}>
+                {stat.trend === 'up' ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+              </div>
+            )}
           </div>
 
           <div className="relative z-10">
@@ -136,7 +136,12 @@ export function StatCards({
               <span className="text-2xl font-black text-slate-900">{stat.value}</span>
               <span className="text-xs font-semibold text-slate-400">{stat.unit}</span>
             </div>
-            <p className="mt-2 text-[10px] font-semibold leading-4 text-slate-400">{stat.change}</p>
+            <p
+              className="mt-2 text-[10px] font-semibold leading-4 text-slate-400 truncate"
+              title={stat.change}
+            >
+              Sumber: {stat.change.split('/').pop()}
+            </p>
           </div>
         </motion.div>
       ))}

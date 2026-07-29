@@ -507,6 +507,7 @@ export default function App() {
       <main className="max-w-7xl mx-auto p-4 md:p-8 space-y-8">
         <section className="rounded-3xl bg-slate-950 text-white p-8 md:p-10 relative overflow-hidden shadow-xl">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_20%,rgba(16,185,129,0.28),transparent_32%),radial-gradient(circle_at_10%_90%,rgba(59,130,246,0.18),transparent_28%)]" />
+          <img src="/logo_bpp.png" alt="Logo BPP" className="absolute top-6 right-6 md:top-8 md:right-8 w-16 h-16 object-contain z-10" />
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-end">
             <div className="space-y-5 max-w-4xl">
               <div className="flex items-center gap-2 bg-white/10 w-fit px-3 py-1.5 rounded-full backdrop-blur-md border border-white/15">
@@ -663,7 +664,7 @@ export default function App() {
       </main>
       
       <footer className="max-w-7xl mx-auto px-4 md:px-8 mt-12 pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-xs font-medium bg-white/50 rounded-b-2xl py-6">
-        <p>© 2026 Skripsi Penelitian Mahasiswa - Kec. Cisarua, Kabupaten Bandung Barat</p>
+        <p>© 2026 Niken Nuraifah Suherlan - Skripsi Penelitian Mahasiswa - Kec. Cisarua, Kabupaten Bandung Barat</p>
         <div className="flex gap-6">
           <span className="flex items-center gap-1.5"><BrainCircuit size={14} className="text-green-500" /> LSTM Algorithm</span>
           <span className="flex items-center gap-1.5"><CloudSun size={14} className="text-blue-500" /> Open-Meteo Integration</span>
