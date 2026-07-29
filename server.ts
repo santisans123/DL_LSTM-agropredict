@@ -591,14 +591,22 @@ async function startServer() {
       return;
     }
 
+    const today = new Date();
+    const todayStr = today.toISOString().slice(0, 10);
+
     const allRows: Array<Record<string, string | number>> = [];
     try {
       for (const year of years) {
+        const isCurrentOrFutureYear = year >= today.getFullYear();
+        const endDate = isCurrentOrFutureYear ? todayStr : `${year}-12-31`;
+        const startDate = `${year}-01-01`;
+        if (isCurrentOrFutureYear && startDate > endDate) continue;
+
         const url = new URL("https://archive-api.open-meteo.com/v1/archive");
         url.searchParams.set("latitude", latitude.toString());
         url.searchParams.set("longitude", longitude.toString());
-        url.searchParams.set("start_date", `${year}-01-01`);
-        url.searchParams.set("end_date", `${year}-12-31`);
+        url.searchParams.set("start_date", startDate);
+        url.searchParams.set("end_date", endDate);
         url.searchParams.set("daily", "temperature_2m_mean,precipitation_sum,wind_speed_10m_max");
         url.searchParams.set("timezone", "Asia/Jakarta");
 
