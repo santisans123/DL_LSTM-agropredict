@@ -13,6 +13,7 @@ import { LossCurve } from './components/LossCurve';
 import { ShapExplanation } from './components/ShapExplanation';
 import { DataSourceTable } from './components/DataSourceTable';
 import { ManualValidation } from './components/ManualValidation';
+import { ReliabilityValidation } from './components/ReliabilityValidation';
 import { COMMODITIES, Commodity } from './constants';
 import { AIInsightFactor, CommodityMetricSummary, DatasetType, DatasetUploadResult, ModelMetrics, PredictionData } from './types';
 import { ArrowRight, BrainCircuit, CalendarClock, CloudSun, Info, Leaf, Sparkles, UploadCloud } from 'lucide-react';
@@ -663,6 +664,8 @@ export default function App() {
           />
           <DataSourceTable />
         </div>
+
+        <ReliabilityValidation />
       </main>
       
       <footer className="max-w-7xl mx-auto px-4 md:px-8 mt-12 pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-xs font-medium bg-white/50 rounded-b-2xl py-6">

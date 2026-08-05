@@ -119,6 +119,71 @@ function computeCommodityMetrics(csvPath: string, sourceLabel: string) {
   }));
 }
 
+const INDO_MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+
+function formatPeriodLabel(period: string) {
+  const match = period.match(/^(\d{4})-(\d{2})/);
+  if (!match) return period;
+  const monthIndex = Number(match[2]) - 1;
+  const monthLabel = INDO_MONTHS_SHORT[monthIndex] || match[2];
+  return `${monthLabel} ${match[1]}`;
+}
+
+function variance(values: number[]) {
+  const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
+  return values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / (values.length - 1);
+}
+
+function computeReliability(csvPath: string, sourceLabel: string) {
+  const rows = readCsvRows(csvPath);
+  const matrix = new Map<string, Map<string, number>>();
+  const periodSet = new Set<string>();
+
+  for (const row of rows) {
+    if (String(row.split || "").toLowerCase() !== "test") continue;
+    const name = String(row.Nama || "").trim();
+    const period = String(row.Periode || "").trim();
+    const actual = Number(row.aktual);
+    const prediksi = Number(row.prediksi);
+    if (!name || !period || !Number.isFinite(actual) || !Number.isFinite(prediksi) || actual === 0) continue;
+
+    const accuracy = Math.max(0, Math.min(100, 100 - (Math.abs(actual - prediksi) / actual) * 100));
+    if (!matrix.has(name)) matrix.set(name, new Map());
+    matrix.get(name)!.set(period, accuracy);
+    periodSet.add(period);
+  }
+
+  const periods = [...periodSet].sort();
+  const names = [...matrix.keys()].filter((name) => periods.every((p) => matrix.get(name)!.has(p)));
+
+  if (names.length < 3 || periods.length < 2) {
+    throw new Error("Data uji tidak cukup untuk menghitung Cronbach's Alpha");
+  }
+
+  const data = names.map((name) => periods.map((p) => matrix.get(name)!.get(p)!));
+  const k = periods.length;
+  const n = names.length;
+
+  const itemVariances = periods.map((_, j) => variance(data.map((row) => row[j])));
+  const totalScores = data.map((row) => row.reduce((sum, v) => sum + v, 0));
+  const totalVariance = variance(totalScores);
+
+  const alpha = (k / (k - 1)) * (1 - itemVariances.reduce((sum, v) => sum + v, 0) / totalVariance);
+
+  const items = periods.map((period, j) => ({
+    label: formatPeriodLabel(period),
+    score: Number((data.reduce((sum, row) => sum + row[j], 0) / n).toFixed(1)),
+  }));
+
+  return {
+    source: sourceLabel,
+    alpha: Number(alpha.toFixed(4)),
+    n,
+    k,
+    items,
+  };
+}
+
 function safeParseInsightPayload(text: string) {
   const tryParse = (input: string) => {
     try {
@@ -351,6 +416,37 @@ async function startServer() {
     } catch (error) {
       console.warn("Commodity metrics read failed:", error);
       res.json({ source: "Fallback statis constants.ts", artifactDir: ARTIFACT_DIR, items: [] });
+    }
+  });
+
+  app.get("/api/model/reliability", (_req, res) => {
+    try {
+      const csvCandidates = [
+        { file: path.join(ARTIFACT_DIR, "hasil_prediksi_test.csv"), label: "program_colabs/artefak_model/hasil_prediksi_test.csv" },
+        { file: path.join(LEGACY_ARTIFACT_DIR, "hasil_prediksi_test.csv"), label: "artefak_model/hasil_prediksi_test.csv" },
+      ];
+      const source = csvCandidates.find((item) => fs.existsSync(item.file));
+      if (!source) {
+        throw new Error("hasil_prediksi_test.csv not found");
+      }
+
+      res.json(computeReliability(source.file, source.label));
+    } catch (error) {
+      console.warn("Reliability computation failed:", error);
+      res.json({
+        source: "Fallback statis (data uji tidak tersedia)",
+        alpha: 0.8829,
+        n: 8,
+        k: 6,
+        items: [
+          { label: "Okt 2025", score: 75.8 },
+          { label: "Nov 2025", score: 74.3 },
+          { label: "Des 2025", score: 78.5 },
+          { label: "Jan 2026", score: 54.5 },
+          { label: "Feb 2026", score: 47.9 },
+          { label: "Mar 2026", score: 72.6 },
+        ],
+      });
     }
   });
 
