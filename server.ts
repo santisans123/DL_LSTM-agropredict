@@ -136,51 +136,89 @@ function variance(values: number[]) {
 
 function computeReliability(csvPath: string, sourceLabel: string) {
   const rows = readCsvRows(csvPath);
-  const matrix = new Map<string, Map<string, number>>();
-  const periodSet = new Set<string>();
 
-  for (const row of rows) {
-    if (String(row.split || "").toLowerCase() !== "test") continue;
+  const calculateCronbachForFilter = (filterFn: (row: any) => boolean) => {
+    const filteredRows = rows.filter(filterFn);
+    const matrix = new Map<string, Map<string, number>>();
+    const periodSet = new Set<string>();
+
+    for (const row of filteredRows) {
+      const name = String(row.Nama || "").trim();
+      const period = String(row.Periode || "").trim();
+      const actual = Number(row.aktual);
+      const prediksi = Number(row.prediksi);
+      if (!name || !period || !Number.isFinite(actual) || !Number.isFinite(prediksi)) continue;
+
+      let accuracy = 0;
+      if (actual === 0) {
+        accuracy = prediksi === 0 ? 100 : 0;
+      } else {
+        accuracy = Math.max(0, Math.min(100, 100 - (Math.abs(actual - prediksi) / actual) * 100));
+      }
+
+      if (!matrix.has(name)) matrix.set(name, new Map());
+      matrix.get(name)!.set(period, accuracy);
+      periodSet.add(period);
+    }
+
+    const periods = [...periodSet].sort();
+    const names = [...matrix.keys()].filter((name) => periods.every((p) => matrix.get(name)!.has(p)));
+
+    if (names.length < 2 || periods.length < 2) {
+      return { alpha: 0, n: names.length, k: periods.length, totalRows: filteredRows.length };
+    }
+
+    const data = names.map((name) => periods.map((p) => matrix.get(name).get(p)));
+    const k = periods.length;
+    const n = names.length;
+
+    const itemVariances = periods.map((_, j) => variance(data.map((row) => row[j])));
+    const totalScores = data.map((row) => row.reduce((sum, v) => sum + v, 0));
+    const totalVariance = variance(totalScores);
+
+    const alpha = (k / (k - 1)) * (1 - itemVariances.reduce((sum, v) => sum + v, 0) / totalVariance);
+
+    return {
+      alpha: Number(alpha.toFixed(4)),
+      n,
+      k,
+      totalRows: filteredRows.length,
+    };
+  };
+
+  const testSplitFn = (row: any) => String(row.split || "").toLowerCase() === "test";
+  const testMetrics = calculateCronbachForFilter(testSplitFn);
+  const allMetrics = calculateCronbachForFilter(() => true);
+
+  const testRows = rows.filter(testSplitFn);
+  const details = testRows.map((row) => {
     const name = String(row.Nama || "").trim();
     const period = String(row.Periode || "").trim();
-    const actual = Number(row.aktual);
+    const aktual = Number(row.aktual);
     const prediksi = Number(row.prediksi);
-    if (!name || !period || !Number.isFinite(actual) || !Number.isFinite(prediksi) || actual === 0) continue;
 
-    const accuracy = Math.max(0, Math.min(100, 100 - (Math.abs(actual - prediksi) / actual) * 100));
-    if (!matrix.has(name)) matrix.set(name, new Map());
-    matrix.get(name)!.set(period, accuracy);
-    periodSet.add(period);
-  }
+    let accuracy = 0;
+    if (aktual === 0) {
+      accuracy = prediksi === 0 ? 100 : 0;
+    } else {
+      accuracy = Math.max(0, Math.min(100, 100 - (Math.abs(aktual - prediksi) / aktual) * 100));
+    }
 
-  const periods = [...periodSet].sort();
-  const names = [...matrix.keys()].filter((name) => periods.every((p) => matrix.get(name)!.has(p)));
-
-  if (names.length < 3 || periods.length < 2) {
-    throw new Error("Data uji tidak cukup untuk menghitung Cronbach's Alpha");
-  }
-
-  const data = names.map((name) => periods.map((p) => matrix.get(name)!.get(p)!));
-  const k = periods.length;
-  const n = names.length;
-
-  const itemVariances = periods.map((_, j) => variance(data.map((row) => row[j])));
-  const totalScores = data.map((row) => row.reduce((sum, v) => sum + v, 0));
-  const totalVariance = variance(totalScores);
-
-  const alpha = (k / (k - 1)) * (1 - itemVariances.reduce((sum, v) => sum + v, 0) / totalVariance);
-
-  const items = periods.map((period, j) => ({
-    label: formatPeriodLabel(period),
-    score: Number((data.reduce((sum, row) => sum + row[j], 0) / n).toFixed(1)),
-  }));
+    return {
+      name,
+      period: formatPeriodLabel(period),
+      prediksi,
+      aktual,
+      accuracy: Number(accuracy.toFixed(1)),
+      match: accuracy >= 70,
+    };
+  });
 
   return {
     source: sourceLabel,
-    alpha: Number(alpha.toFixed(4)),
-    n,
-    k,
-    items,
+    test: testMetrics,
+    all: allMetrics,
+    details,
   };
 }
 
@@ -435,17 +473,26 @@ async function startServer() {
       console.warn("Reliability computation failed:", error);
       res.json({
         source: "Fallback statis (data uji tidak tersedia)",
-        alpha: 0.8829,
-        n: 8,
-        k: 6,
-        items: [
-          { label: "Okt 2025", score: 75.8 },
-          { label: "Nov 2025", score: 74.3 },
-          { label: "Des 2025", score: 78.5 },
-          { label: "Jan 2026", score: 54.5 },
-          { label: "Feb 2026", score: 47.9 },
-          { label: "Mar 2026", score: 72.6 },
-        ],
+        test: {
+          alpha: 0.8902,
+          n: 9,
+          k: 6,
+          totalRows: 54
+        },
+        all: {
+          alpha: 0.9585,
+          n: 9,
+          k: 36,
+          totalRows: 324
+        },
+        details: [
+          { name: "Bawang Daun", period: "Okt 2025", prediksi: 16000, aktual: 14500, accuracy: 90.3, match: true },
+          { name: "Bawang Daun", period: "Nov 2025", prediksi: 14500, aktual: 37500, accuracy: 38.7, match: false },
+          { name: "Bawang Daun", period: "Des 2025", prediksi: 37500, aktual: 24000, accuracy: 43.8, match: false },
+          { name: "Bawang Daun", period: "Jan 2026", prediksi: 24000, aktual: 60000, accuracy: 40.0, match: false },
+          { name: "Bawang Daun", period: "Feb 2026", prediksi: 60000, aktual: 60000, accuracy: 100.0, match: true },
+          { name: "Bawang Daun", period: "Mar 2026", prediksi: 60000, aktual: 60000, accuracy: 100.0, match: true }
+        ]
       });
     }
   });

@@ -2,17 +2,27 @@ import React, { useState } from 'react';
 import { ShieldCheck, Loader2, ChevronDown, PlayCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-interface ReliabilityItem {
-  label: string;
-  score: number;
+interface SplitMetrics {
+  alpha: number;
+  n: number;
+  k: number;
+  totalRows: number;
+}
+
+interface ReliabilityDetail {
+  name: string;
+  period: string;
+  prediksi: number;
+  aktual: number;
+  accuracy: number;
+  match: boolean;
 }
 
 interface ReliabilityResult {
   source: string;
-  alpha: number;
-  n: number;
-  k: number;
-  items: ReliabilityItem[];
+  test: SplitMetrics;
+  all: SplitMetrics;
+  details: ReliabilityDetail[];
 }
 
 function getTier(alpha: number) {
@@ -61,79 +71,6 @@ function getTier(alpha: number) {
   };
 }
 
-const ITEM_GRID_COLS: Record<number, string> = {
-  1: 'xl:grid-cols-1',
-  2: 'xl:grid-cols-2',
-  3: 'xl:grid-cols-3',
-  4: 'xl:grid-cols-4',
-  5: 'xl:grid-cols-5',
-  6: 'xl:grid-cols-6',
-};
-
-function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
-  const angleRad = (angleDeg * Math.PI) / 180;
-  return { x: cx + r * Math.cos(angleRad), y: cy + r * Math.sin(angleRad) };
-}
-
-function arcPath(cx: number, cy: number, r: number, startDeg: number, endDeg: number) {
-  const start = polarToCartesian(cx, cy, r, startDeg);
-  const end = polarToCartesian(cx, cy, r, endDeg);
-  const largeArc = endDeg - startDeg <= 180 ? 0 : 1;
-  return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 1 ${end.x} ${end.y}`;
-}
-
-function Gauge({ value }: { value: number }) {
-  const cx = 150;
-  const cy = 140;
-  const r = 110;
-  const clamped = Math.max(0, Math.min(100, value));
-  const needleAngle = 180 + (clamped / 100) * 180;
-  const needleTip = polarToCartesian(cx, cy, r - 18, needleAngle);
-
-  const bands: Array<[number, number, string]> = [
-    [0, 60, '#f43f5e'],
-    [60, 80, '#f59e0b'],
-    [80, 100, '#22c55e'],
-  ];
-
-  return (
-    <svg viewBox="0 0 300 210" className="w-full max-w-xs mx-auto">
-      {bands.map(([from, to, color]) => (
-        <path
-          key={from}
-          d={arcPath(cx, cy, r, 180 + (from / 100) * 180, 180 + (to / 100) * 180)}
-          fill="none"
-          stroke={color}
-          strokeWidth={16}
-          strokeLinecap="round"
-          opacity={0.85}
-        />
-      ))}
-      {[0, 20, 40, 60, 80, 100].map((tick) => {
-        const pos = polarToCartesian(cx, cy, r + 20, 180 + (tick / 100) * 180);
-        return (
-          <text key={tick} x={pos.x} y={pos.y} textAnchor="middle" fontSize={10} className="fill-slate-400 font-bold">
-            {tick}
-          </text>
-        );
-      })}
-      <line
-        x1={cx}
-        y1={cy}
-        x2={needleTip.x}
-        y2={needleTip.y}
-        stroke="#0f172a"
-        strokeWidth={4}
-        strokeLinecap="round"
-      />
-      <circle cx={cx} cy={cy} r={7} fill="#0f172a" />
-      <text x={cx} y={cy + 40} textAnchor="middle" fontSize={30} fontWeight={900} className="fill-slate-900">
-        {clamped.toFixed(1)}%
-      </text>
-    </svg>
-  );
-}
-
 export function ReliabilityValidation() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [result, setResult] = useState<ReliabilityResult | null>(null);
@@ -153,18 +90,19 @@ export function ReliabilityValidation() {
     }
   };
 
-  const tier = result ? getTier(result.alpha) : null;
-
   return (
     <section className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
       <div className="flex items-center gap-3 mb-2">
         <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
           <ShieldCheck size={20} />
         </div>
-        <div>
-          <h3 className="text-lg font-black text-slate-900">Validasi Sistem (Seberapa Bisa Diandalkan Sistem Ini?)</h3>
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-black text-slate-900">Reliabilitas Model (Cronbach's Alpha)</h3>
+            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">✓</span>
+          </div>
           <p className="text-xs font-medium text-slate-500">
-            Pakai data uji bawaan (test split dari dataset yang sudah ada) — tidak perlu upload apa pun.
+            Pengujian tambahan untuk mengukur konsistensi hasil Prediksi model terhadap data Aktual (ground truth), di luar metrik klasifikasi konvensional di atas.
           </p>
         </div>
       </div>
@@ -184,51 +122,118 @@ export function ReliabilityValidation() {
       )}
 
       <AnimatePresence>
-        {status === 'done' && result && tier && (
+        {status === 'done' && result && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
             className="mt-6 space-y-6"
           >
-            <div className="rounded-2xl border border-slate-200 p-6 grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-6 items-center">
-              <Gauge value={result.alpha * 100} />
-              <div className="space-y-3">
-                <h4 className={`text-xl font-black ${tier.textClass}`}>{tier.headline}</h4>
-                <p className="text-sm text-slate-600 leading-6 font-medium">
-                  Dari <strong>{result.n} komoditas</strong> yang diuji pada data test selama {result.k} bulan
-                  berturut-turut, komoditas yang diprediksi akurat oleh sistem cenderung{' '}
-                  {result.alpha >= 0.8 ? 'tetap' : 'tidak selalu'} akurat di bulan-bulan lainnya juga — begitu pula
-                  sebaliknya untuk yang sulit diprediksi.
-                </p>
-                <p className="text-sm text-slate-600 leading-6">
-                  <strong className="text-slate-800">Analoginya</strong>: rata-rata akurasi bulanan memang bisa naik
-                  turun mengikuti musim panen (lihat kartu di bawah). Yang diukur Cronbach's Alpha bukan apakah
-                  angkanya sama persis tiap bulan, tapi apakah <em>pola</em> komoditas mana yang lebih akurat/kurang
-                  akurat tetap konsisten dari bulan ke bulan.
-                </p>
+            {/* Table 1: Cakupan Data */}
+            <div className="rounded-2xl border border-slate-200 overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="px-5 py-3 text-left text-[10px] uppercase font-black text-slate-500">Cakupan Data</th>
+                    <th className="px-5 py-3 text-right text-[10px] uppercase font-black text-slate-500">Jumlah Data</th>
+                    <th className="px-5 py-3 text-right text-[10px] uppercase font-black text-slate-500">Cronbach's Alpha</th>
+                    <th className="px-5 py-3 text-left text-[10px] uppercase font-black text-slate-500">Kategori Reliabilitas</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                  <tr>
+                    <td className="px-5 py-4">Data Uji (Test Set)</td>
+                    <td className="px-5 py-4 text-right font-mono">{result.test.totalRows}</td>
+                    <td className="px-5 py-4 text-right font-mono font-bold">{result.test.alpha.toFixed(4)}</td>
+                    <td className="px-5 py-4">
+                      <span className={`inline-block rounded-full px-3 py-1 text-xs font-black ${getTier(result.test.alpha).bgClass} ${getTier(result.test.alpha).textClass}`}>
+                        {getTier(result.test.alpha).badge}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="px-5 py-4">Seluruh Dataset</td>
+                    <td className="px-5 py-4 text-right font-mono">{result.all.totalRows}</td>
+                    <td className="px-5 py-4 text-right font-mono font-bold">{result.all.alpha.toFixed(4)}</td>
+                    <td className="px-5 py-4">
+                      <span className={`inline-block rounded-full px-3 py-1 text-xs font-black ${getTier(result.all.alpha).bgClass} ${getTier(result.all.alpha).textClass}`}>
+                        {getTier(result.all.alpha).badge}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Blue Alert Box */}
+            <div className="rounded-2xl border border-blue-100 bg-blue-50/70 p-5 flex items-start gap-3.5 text-sm text-blue-900 leading-6 font-medium">
+              <span className="text-base shrink-0">📌</span>
+              <div>
+                Pada data uji (paling representatif karena tidak pernah dilihat model saat training), Cronbach's Alpha ={' '}
+                <strong className="font-mono font-bold">{result.test.alpha.toFixed(4)}</strong> — kategori reliabilitas:{' '}
+                <strong>{getTier(result.test.alpha).badge}</strong>. Nilai ini mengukur seberapa konsisten hasil Prediksi model bergerak searah dengan data Aktual: semakin tinggi nilainya, semakin dapat diandalkan hasil prediksi model sebagai representasi kondisi lapangan yang sesungguhnya.
               </div>
             </div>
 
-            <div className={`grid grid-cols-2 md:grid-cols-3 xl:grid-cols-${Math.min(result.items.length, 6)} gap-3`}>
-              {result.items.map((item) => (
-                <motion.div
-                  key={item.label}
-                  whileHover={{ scale: 1.02 }}
-                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
-                >
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{item.label}</p>
-                  <p className="mt-1 text-2xl font-black text-slate-900">{item.score.toFixed(1)}%</p>
-                </motion.div>
-              ))}
+            {/* Header 2: Kesesuaian */}
+            <div className="pt-2">
+              <h4 className="text-sm font-black text-slate-900 uppercase tracking-tight">
+                Tabel Kesesuaian Prediksi vs Aktual (per Komoditas, Data Uji)
+              </h4>
+              <p className="text-xs text-slate-500 font-medium mt-1">
+                Data mentah di balik nilai Cronbach's Alpha pada data uji di atas: setiap komoditas dibandingkan Prediksi model dengan Aktual (ground truth).
+              </p>
             </div>
 
-            <p className="text-xs font-semibold text-slate-500">
-              {result.alpha >= 0.8
-                ? 'Rata-rata akurasi bulanan boleh naik-turun mengikuti musim, tapi pola relatif antar komoditas tetap konsisten — itu yang bikin sistemnya bisa diandalkan.'
-                : 'Pola relatif antar komoditas dari bulan ke bulan masih cukup berubah-ubah, jadi keandalan sistem belum sepenuhnya stabil.'}
-            </p>
+            {/* Table 2: Kesesuaian per Komoditas */}
+            <div className="rounded-2xl border border-slate-200 overflow-hidden max-h-[350px] overflow-y-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
+                  <tr>
+                    <th className="px-5 py-3 text-left text-[10px] uppercase font-black text-slate-500">Komoditas</th>
+                    <th className="px-5 py-3 text-left text-[10px] uppercase font-black text-slate-500">Periode</th>
+                    <th className="px-5 py-3 text-right text-[10px] uppercase font-black text-slate-500">Prediksi</th>
+                    <th className="px-5 py-3 text-right text-[10px] uppercase font-black text-slate-500">Aktual</th>
+                    <th className="px-5 py-3 text-center text-[10px] uppercase font-black text-slate-500">Cocok</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                  {result.details.map((row, idx) => (
+                    <tr key={idx} className={row.match ? 'hover:bg-emerald-50/10' : 'hover:bg-rose-50/10'}>
+                      <td className="px-5 py-3 font-bold text-slate-900">{row.name}</td>
+                      <td className="px-5 py-3 text-slate-500">{row.period}</td>
+                      <td className="px-5 py-3 text-right font-mono">{row.prediksi.toLocaleString('id-ID')} kg</td>
+                      <td className="px-5 py-3 text-right font-mono">{row.aktual.toLocaleString('id-ID')} kg</td>
+                      <td className="px-5 py-3 text-center">
+                        {row.match ? (
+                          <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700 border border-emerald-100">
+                            ✓ Cocok
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded bg-rose-50 px-2 py-0.5 text-xs font-bold text-rose-700 border border-rose-100">
+                            ✗ Tidak Cocok
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
+            {/* Match Rate Note */}
+            {(() => {
+              const matchCount = result.details.filter((d) => d.match).length;
+              const totalCount = result.details.length;
+              const matchRate = totalCount > 0 ? (matchCount / totalCount) * 100 : 0;
+              return (
+                <p className="text-xs font-bold text-slate-500 px-1">
+                  Match rate: {matchRate.toFixed(2)}% ({matchCount} dari {totalCount} data uji, Prediksi mendekati Aktual dengan toleransi error ≤ 30%).
+                </p>
+              );
+            })()}
+
+            {/* Accordion: Detail Teknis */}
             <div className="rounded-2xl border border-slate-200 overflow-hidden">
               <button
                 type="button"
@@ -249,15 +254,14 @@ export function ReliabilityValidation() {
                     <div className="p-5 space-y-4">
                       <div className="space-y-3">
                         <p className="text-sm font-bold text-slate-800">
-                          Nilai Cronbach's Alpha: <span className="font-mono">{result.alpha.toFixed(4)}</span> →
-                          ditampilkan sebagai <span className="font-mono">{(result.alpha * 100).toFixed(1)}%</span> di
-                          gauge
+                          Nilai Cronbach's Alpha Data Uji:{' '}
+                          <span className="font-mono">{result.test.alpha.toFixed(4)}</span>
                         </p>
-                        <span className={`inline-block rounded-full px-3 py-1 text-xs font-black ${tier.bgClass} ${tier.textClass}`}>
-                          {tier.badge}
+                        <span className={`inline-block rounded-full px-3 py-1 text-xs font-black ${getTier(result.test.alpha).bgClass} ${getTier(result.test.alpha).textClass}`}>
+                          {getTier(result.test.alpha).badge}
                         </span>
                         <p className="text-xs text-slate-500 font-medium leading-relaxed">
-                          Dihitung dari {result.n} komoditas pada data uji (test split), {result.k} bulan pengujian
+                          Dihitung dari {result.test.n} komoditas pada data uji, {result.test.k} bulan pengujian
                           sebagai item pengukuran berulang.
                         </p>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Sumber: {result.source}</p>
@@ -270,16 +274,16 @@ export function ReliabilityValidation() {
                         <ol className="text-xs text-slate-600 leading-relaxed font-medium list-decimal list-inside space-y-1.5">
                           <li>
                             Ambil baris <code className="font-mono text-[11px] bg-white px-1 py-0.5 rounded border border-slate-200">split = "test"</code>{' '}
-                            dari data hasil prediksi ({result.n} komoditas × {result.k} bulan yang datanya lengkap).
+                            dari data hasil prediksi ({result.test.n} komoditas × {result.test.k} bulan yang datanya lengkap).
                           </li>
                           <li>
                             Hitung skor akurasi tiap sel (komoditas × bulan):{' '}
                             <code className="font-mono text-[11px] bg-white px-1 py-0.5 rounded border border-slate-200">
                               100 − |aktual − prediksi| / aktual × 100
                             </code>
-                            , dibatasi 0–100.
+                            , dibatasi 0–100 (jika aktual = 0 dan prediksi = 0, akurasi = 100%; jika aktual = 0 dan prediksi != 0, akurasi = 0%).
                           </li>
-                          <li>Susun jadi matriks {result.n} baris (komoditas) × {result.k} kolom (bulan).</li>
+                          <li>Susun jadi matriks {result.test.n} baris (komoditas) × {result.test.k} kolom (bulan).</li>
                           <li>
                             Terapkan rumus:{' '}
                             <code className="font-mono text-[11px] bg-white px-1 py-0.5 rounded border border-slate-200">
