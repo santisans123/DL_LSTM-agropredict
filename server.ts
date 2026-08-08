@@ -165,10 +165,10 @@ function computeReliability(csvPath: string, sourceLabel: string) {
     const names = [...matrix.keys()].filter((name) => periods.every((p) => matrix.get(name)!.has(p)));
 
     if (names.length < 2 || periods.length < 2) {
-      return { alpha: 0, n: names.length, k: periods.length, totalRows: filteredRows.length };
+      return { alpha: 0, n: names.length, k: periods.length, totalRows: filteredRows.length, items: [] };
     }
 
-    const data = names.map((name) => periods.map((p) => matrix.get(name).get(p)));
+    const data = names.map((name) => periods.map((p) => matrix.get(name)!.get(p)!));
     const k = periods.length;
     const n = names.length;
 
@@ -178,11 +178,17 @@ function computeReliability(csvPath: string, sourceLabel: string) {
 
     const alpha = (k / (k - 1)) * (1 - itemVariances.reduce((sum, v) => sum + v, 0) / totalVariance);
 
+    const items = periods.map((period, j) => ({
+      label: formatPeriodLabel(period),
+      score: Number((data.reduce((sum, row) => sum + row[j], 0) / n).toFixed(1)),
+    }));
+
     return {
       alpha: Number(alpha.toFixed(4)),
       n,
       k,
       totalRows: filteredRows.length,
+      items,
     };
   };
 
@@ -477,7 +483,15 @@ async function startServer() {
           alpha: 0.8902,
           n: 9,
           k: 6,
-          totalRows: 54
+          totalRows: 54,
+          items: [
+            { label: "Okt 2025", score: 75.8 },
+            { label: "Nov 2025", score: 74.3 },
+            { label: "Des 2025", score: 78.5 },
+            { label: "Jan 2026", score: 54.5 },
+            { label: "Feb 2026", score: 47.9 },
+            { label: "Mar 2026", score: 72.6 }
+          ]
         },
         all: {
           alpha: 0.9585,

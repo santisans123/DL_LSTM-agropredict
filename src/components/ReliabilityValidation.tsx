@@ -7,6 +7,7 @@ interface SplitMetrics {
   n: number;
   k: number;
   totalRows: number;
+  items?: { label: string; score: number }[];
 }
 
 interface ReliabilityDetail {
@@ -23,6 +24,73 @@ interface ReliabilityResult {
   test: SplitMetrics;
   all: SplitMetrics;
   details: ReliabilityDetail[];
+}
+
+function PremiumGauge({ value }: { value: number }) {
+  const clamped = Math.max(0, Math.min(100, value));
+  const r = 100;
+  const circumference = Math.PI * r; 
+  const strokeDashoffset = circumference - (clamped / 100) * circumference;
+
+  const label = clamped >= 90 ? 'Sangat Baik' :
+                clamped >= 80 ? 'Baik' :
+                clamped >= 70 ? 'Dapat Diterima' :
+                clamped >= 60 ? 'Diragukan' : 'Buruk';
+                
+  const colorClass = clamped >= 80 ? 'fill-emerald-600' :
+                     clamped >= 70 ? 'fill-blue-600' :
+                     clamped >= 60 ? 'fill-amber-500' : 'fill-rose-500';
+
+  return (
+    <div className="relative flex flex-col items-center justify-center w-64 h-36 shrink-0 mx-auto">
+      <svg viewBox="0 0 300 160" className="w-full h-full">
+        <path
+          d="M 50 150 A 100 100 0 0 1 250 150"
+          fill="none"
+          stroke="#f1f5f9"
+          strokeWidth="16"
+          strokeLinecap="round"
+        />
+        <defs>
+          <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#f43f5e" />
+            <stop offset="50%" stopColor="#fbbf24" />
+            <stop offset="100%" stopColor="#10b981" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M 50 150 A 100 100 0 0 1 250 150"
+          fill="none"
+          stroke="url(#gaugeGradient)"
+          strokeWidth="16"
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={strokeDashoffset}
+          className="transition-all duration-1000 ease-out"
+        />
+        <text
+          x="150"
+          y="125"
+          textAnchor="middle"
+          fontSize="26"
+          fontWeight="900"
+          className="fill-slate-900"
+        >
+          {clamped.toFixed(1)}%
+        </text>
+        <text
+          x="150"
+          y="148"
+          textAnchor="middle"
+          fontSize="10"
+          fontWeight="900"
+          className={`${colorClass} uppercase tracking-wider`}
+        >
+          {label}
+        </text>
+      </svg>
+    </div>
+  );
 }
 
 function getTier(alpha: number) {
@@ -129,6 +197,50 @@ export function ReliabilityValidation() {
             transition={{ duration: 0.35 }}
             className="mt-6 space-y-6"
           >
+            {/* Ring Summary Card (Gauge & Monthly Averages) */}
+            <div className="rounded-2xl border border-slate-200 bg-slate-50/40 p-6 flex flex-col lg:flex-row items-center gap-8 shadow-sm">
+              {/* Premium Gauge Display */}
+              <PremiumGauge value={result.test.alpha * 100} />
+              
+              <div className="flex-1 space-y-4">
+                <div className="space-y-2 text-center lg:text-left">
+                  <h4 className="text-xl font-black text-slate-800 tracking-tight">
+                    Keandalan Sistem: <span className={getTier(result.test.alpha).textClass}>{getTier(result.test.alpha).headline}</span>
+                  </h4>
+                  <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                    Dari <strong>{result.test.n} komoditas</strong> yang diuji pada data uji selama <strong>{result.test.k} bulan</strong> berturut-turut, model prediksi menunjukkan konsistensi pola yang andal di bulan-bulan lainnya.
+                  </p>
+                  <p className="text-xs text-slate-500 font-semibold leading-relaxed">
+                    Analogi: Rata-rata akurasi bulanan dapat berfluktuasi mengikuti musim panen (lihat grafik kartu di bawah), namun konsistensi keandalan (Cronbach's Alpha) mengukur kestabilan pola relatif antar komoditas.
+                  </p>
+                </div>
+
+                {/* Monthly Trend Cards with Differentiated Styles */}
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
+                  {result.test.items?.map((item) => {
+                    const isGood = item.score >= 80;
+                    const isAcceptable = item.score >= 70;
+                    const isWarn = item.score >= 50;
+
+                    const border = isGood ? 'border-t-emerald-500' :
+                                   isAcceptable ? 'border-t-blue-500' :
+                                   isWarn ? 'border-t-amber-500' : 'border-t-rose-500';
+
+                    return (
+                      <motion.div
+                        key={item.label}
+                        whileHover={{ scale: 1.03, y: -2 }}
+                        className={`bg-white rounded-xl border border-slate-200 ${border} border-t-4 p-4 shadow-sm flex flex-col justify-between transition-all`}
+                      >
+                        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">{item.label}</span>
+                        <span className="mt-2 text-xl font-black text-slate-900">{item.score.toFixed(1)}%</span>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
             {/* Table 1: Cakupan Data */}
             <div className="rounded-2xl border border-slate-200 overflow-hidden">
               <table className="w-full text-sm">
